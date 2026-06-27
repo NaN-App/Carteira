@@ -16,11 +16,11 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight">Minha Carteira</h1>
-                    <p class="text-xs text-slate-400">Dados Sincronizados via Google Sheets</p>
+                    <h1 class="text-4xl font-bold tracking-tight">Minha Carteira</h1>
+                    <p class="text-xs text-slate-400"></p>
                 </div>
             </div>
             <div id="status-badge" class="px-3 py-1 text-xs font-medium rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
@@ -29,76 +29,65 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6">
-                <p class="text-sm font-medium text-slate-400">Saldo Total (Geral)</p>
-                <p id="card-total" class="text-3xl font-bold mt-2 text-emerald-400">R$ 0,00</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
+                <p class="text-2xl font-medium text-slate-400">Saldo Total</p>
+                <p id="card-total" class="text-4xl font-bold mt-2 text-emerald-400">R$ 0,00</p>
             </div>
-            <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6">
-                <p class="text-sm font-medium text-slate-400">Nacional</p>
-                <p id="card-nacional" class="text-3xl font-bold mt-2 text-white">R$ 0,00</p>
+            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
+                <p class="text-2xl font-medium text-slate-400">Brasil</p>
+                <p id="card-nacional" class="text-4xl font-bold mt-2 text-white">R$ 0,00</p>
             </div>
-            <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6">
-                <p class="text-sm font-medium text-slate-400">Exterior</p>
-                <p id="card-exterior" class="text-3xl font-bold mt-2 text-blue-400">US$ 0,00</p>
-                <p id="card-exterior-brl" class="text-xs text-slate-500 mt-1">Câmbio: R$ 0,00</p>
+            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
+                <p class="text-2xl font-medium text-slate-400">Exterior</p>
+                <p id="card-exterior" class="text-4xl font-bold mt-2 text-blue-400">US$ 0,00</p>
+                <p id="card-exterior-brl" class="text-sm text-slate-500 mt-1">Câmbio: R$ 0,00</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            
-            <div class="lg:col-span-1 bg-slate-800/50 border border-slate-800 rounded-xl p-5 h-fit space-y-4">
-                <div>
-                    <h3 class="font-semibold text-slate-200 mb-3 text-sm uppercase tracking-wider">Conexão</h3>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">LINK DA PLANILHA (.TSV)</label>
-                    <input type="text" id="input-url" placeholder="Cole o link .tsv do Google aqui" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500 mb-3">
-                    
-                    <button type="button" onclick="puxarDadosDaPlanilha()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-all text-sm shadow-md flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.253 8H18" /></svg>
-                        Atualizar Painel
-                    </button>
-                </div>
-
-                <div class="pt-4 border-t border-slate-800 text-center">
-                    <p class="text-xs text-slate-500">O painel atualiza os preços automaticamente direto da sua conta Google.</p>
-                </div>
+        <div class="bg-slate-800/20 border border-slate-800 rounded-xl overflow-hidden w-full">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider bg-slate-900/50">
+                            <th class="py-4 px-5 text-center w-[20%]">Ativo</th>
+                            <th class="py-4 px-5 text-center w-[15%]">QTD</th>
+                            <th class="py-4 px-5 text-center w-[15%]">Preço</th>
+                            <th class="py-4 px-5 text-center w-[20%]">Total</th>
+                            <th class="py-4 px-5 text-center w-[15%]">Variação</th>
+                            <th class="py-4 px-5 text-center w-[15%]">Região</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-ativos-body" class="divide-y divide-slate-800/60 text-sm">
+                        <tr>
+                            <td colspan="6" class="py-12 text-center text-slate-500">Nenhum dado carregado da planilha.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="lg:col-span-3 bg-slate-800/20 border border-slate-800 rounded-xl overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider bg-slate-900/50">
-                                <th class="py-4 px-5">Ativo</th>
-                                <th class="py-4 px-5">Região</th>
-                                <th class="py-4 px-5 text-right">Qtd</th>
-                                <th class="py-4 px-5 text-right">Preço Atual</th>
-                                <th class="py-4 px-5 text-right">Total Atual</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-ativos-body" class="divide-y divide-slate-800/60 text-sm">
-                            <tr>
-                                <td colspan="5" class="py-12 text-center text-slate-500">Nenhum dado carregado da planilha.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
+
+        <div class="bg-slate-800/40 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-end gap-4">
+            <div class="w-full flex-1">
+                <label class="block text-xs font-medium text-slate-400 mb-1">LINK DA PLANILHA (.TSV)</label>
+                <input type="text" id="input-url" placeholder="Cole o link .tsv do Google aqui se quiser alterar a fonte padrão" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+            </div>
+            <button type="button" onclick="puxarDadosDaPlanilha()" class="w-full sm:w-auto h-9 px-5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-all text-xs shadow-md flex items-center justify-center gap-2 whitespace-nowrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.253 8H18" /></svg>
+                Forçar Atualização
+            </button>
+        </div>
+
     </main>
 
     <script>
-        // CONFIGURAÇÃO SEGU INTELEIGENTE: 
-        // Cole o seu link longo do Google Sheets entre as aspas abaixo para salvar de forma definitiva!
         const LINK_PLANILHA_PADRAO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSANcAncbi_YPcolHZquRIHo1ExH6Rzbd7rMtkAj1uevsa_M8_nXwl-ZMffOrKCTcxIVf79fy33H1I/pub?output=tsv"; 
 
         function tratarNumeroBR(valor) {
             if (!valor) return 0;
-            // Remove espaços e lida com formatações do Sheets (ex: 1.500,50 -> 1500.50)
-            let limpo = valor.toString().trim().replace(/\s/g, '');
+            let limpo = valor.toString().replace('%', '').trim().replace(/\s/g, '');
             if (limpo.includes('.') && limpo.includes(',')) {
                 limpo = limpo.replace(/\./g, '').replace(',', '.');
             } else {
@@ -108,9 +97,28 @@
             return isNaN(num) ? 0 : num;
         }
 
-        function formatarMoeda(valor, moeda) {
-            let simbolo = moeda === 'nacional' ? 'R$ ' : 'US$ ';
-            return simbolo + valor.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        // Formata valores financeiros (sempre 2 casas decimais)
+        function formatarNumeroApenas(valor) {
+            return valor.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(w?!\d))/g, '$1.');
+        }
+
+        // Nova função inteligente para formatar a quantidade (QTD) baseada na região
+        function formatarQuantidade(valor, tipo) {
+            if (tipo === 'nacional') {
+                // Remove os decimais e coloca o ponto de milhar se necessário (ex: 1.500)
+                return Math.round(valor).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            }
+            // Para o exterior, mantém as 2 casas decimais devido às frações
+            return formatarNumeroApenas(valor);
+        }
+
+        function formatarVariacao(valor) {
+            if (valor > 0) {
+                return { texto: `+${valor.toFixed(2).replace('.', ',')}%`, classe: 'text-emerald-400 font-medium' };
+            } else if (valor < 0) {
+                return { texto: `${valor.toFixed(2).replace('.', ',')}%`, classe: 'text-rose-400 font-medium' };
+            }
+            return { texto: '0,00%', classe: 'text-slate-400' };
         }
 
         function puxarDadosDaPlanilha() {
@@ -122,10 +130,9 @@
                 return;
             }
 
-            // Tenta salvar no localStorage (caso o navegador local permita)
             try { localStorage.setItem("carteira_url_tsv", url); } catch(e) {}
 
-            alterarStatus("Buscando dados...", "bg-blue-500/10 text-blue-400 border-blue-500/20");
+            alterarStatus("Busca", "bg-blue-500/10 text-blue-400 border-blue-500/20");
 
             fetch(url)
                 .then(response => {
@@ -137,35 +144,37 @@
                 })
                 .catch(error => {
                     console.error(error);
-                    alterarStatus("Erro ao ler planilha", "bg-rose-500/10 text-rose-400 border-rose-500/20");
+                    alterarStatus("Erro", "bg-rose-500/10 text-rose-400 border-rose-500/20");
                     alert("Não foi possível ler a planilha. Verifique se ela foi publicada corretamente como .tsv");
                 });
         }
 
         function processarDadosTSV(conteudo) {
-            let linhas = conteudo.split(/\r?\n/);
+            let lines = conteudo.split(/\r?\n/);
             let ativos = [];
-            let cotacaoDolar = 5.40; // Padrão caso falhe
+            let cotacaoDolar = 5.40;
 
-            // Ignora a linha 0 (cabeçalho) e percorre as demais
-            for (let i = 1; i < linhas.length; i++) {
-                let colunas = linhas[i].split('\t');
+            for (let i = 0; i < lines.length; i++) {
+                let colunas = lines[i].split('\t');
                 if (colunas.length < 4) continue;
 
                 let ticker = colunas[0].trim().toUpperCase();
-                let qtd = tratarNumeroBR(colunas[1]);
-                let tipo = colunas[2].trim().toLowerCase();
-                let preco = tratarNumeroBR(colunas[3]);
-
-                if (!ticker) continue;
-
-                // Captura a linha especial do câmbio do dólar
-                if (tipo === 'cambio' || ticker === 'DOLAR') {
-                    if (preco > 0) cotacaoDolar = preco;
-                    continue; // Não joga o dólar puro na tabela de ativos
+                
+                if (ticker === "ATIVO" || ticker === "TICKER" || ticker === "CÓDIGO" || ticker === "") {
+                    continue;
                 }
 
-                ativos.push({ ticker, qtd, tipo, preco });
+                let qtd = tratarNumeroBR(colunas[1]);
+                let preco = tratarNumeroBR(colunas[2]);
+                let variacao = colunas[3] ? tratarNumeroBR(colunas[3]) : 0;
+                let tipo = colunas[4] ? colunas[4].trim().toLowerCase() : 'nacional';
+
+                if (tipo === 'cambio' || ticker === 'DOLAR') {
+                    if (preco > 0) cotacaoDolar = preco;
+                    continue; 
+                }
+
+                ativos.push({ ticker, qtd, preco, variacao, tipo });
             }
 
             renderizarTela(ativos, cotacaoDolar);
@@ -179,7 +188,7 @@
             let totalExteriorUsd = 0;
 
             if (ativos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="py-12 text-center text-slate-500">Nenhum ativo válido encontrado na planilha.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="py-12 text-center text-slate-500">Nenhum ativo válido encontrado na planilha.</td></tr>';
                 return;
             }
 
@@ -194,15 +203,19 @@
 
                 let labelTipo = item.tipo === 'nacional' ? 'Nacional' : 'Exterior';
                 let corBadge = item.tipo === 'nacional' ? 'bg-slate-800 text-slate-300' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
+                let infoVariacao = formatarVariacao(item.variacao);
 
                 let tr = document.createElement("tr");
                 tr.className = "border-b border-slate-800/40 hover:bg-slate-800/20 transition-colors";
+                
+                // Aplicada a nova função 'formatarQuantidade' na segunda coluna
                 tr.innerHTML = `
-                    <td class="py-4 px-5 font-bold text-slate-200">${item.ticker}</td>
-                    <td class="py-4 px-5"><span class="px-2 py-0.5 text-xs rounded font-medium ${corBadge}">${labelTipo}</span></td>
-                    <td class="py-4 px-5 text-right font-medium">${item.qtd}</td>
-                    <td class="py-4 px-5 text-right font-mono text-slate-300">${formatarMoeda(item.preco, item.tipo)}</td>
-                    <td class="py-4 px-5 text-right font-mono font-semibold text-white">${formatarMoeda(totalItem, item.tipo)}</td>
+                    <td class="py-4 px-5 text-center font-bold text-slate-200">${item.ticker}</td>
+                    <td class="py-4 px-5 text-center font-medium">${formatarQuantidade(item.qtd, item.tipo)}</td>
+                    <td class="py-4 px-5 text-center font-mono text-slate-300">${formatarNumeroApenas(item.preco)}</td>
+                    <td class="py-4 px-5 text-center font-mono font-semibold text-white">${formatarNumeroApenas(totalItem)}</td>
+                    <td class="py-4 px-5 text-center font-mono ${infoVariacao.classe}">${infoVariacao.texto}</td>
+                    <td class="py-4 px-5 text-center"><span class="px-2 py-0.5 text-xs rounded font-medium ${corBadge}">${labelTipo}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -210,13 +223,12 @@
             let totalExteriorBrl = totalExteriorUsd * dolar;
             let saldoGeralBrl = totalNacional + totalExteriorBrl;
 
-            // Atualiza os Cards Dinamicamente
             document.getElementById("card-total").innerText = "R$ " + saldoGeralBrl.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
             document.getElementById("card-nacional").innerText = "R$ " + totalNacional.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
             document.getElementById("card-exterior").innerText = "US$ " + totalExteriorUsd.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
             document.getElementById("card-exterior-brl").innerText = "Câmbio USD/BRL: R$ " + dolar.toFixed(2).replace('.', ',');
 
-            alterarStatus("Sincronizado", "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
+            alterarStatus("OK", "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
         }
 
         function alterarStatus(texto, classes) {
@@ -225,7 +237,6 @@
             badge.className = "px-3 py-1 text-xs font-medium rounded-full " + classes;
         }
 
-        // Inicialização automática ao abrir a página
         window.onload = function() {
             try {
                 let urlSalva = localStorage.getItem("carteira_url_tsv");
