@@ -3,254 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Dashboard de Investimentos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Discurso Público - Salão do Reino</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700;900&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-global: #EEEEEE;     
+            --card-white: #FFFFFF;    
+            --text-dark: #111111;     
+            --text-muted: #65676B;    
+            --accent-blue: #4A607A;   
+            --input-bg: #F3F3F3;      
+            --border-color: #999999;  
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, "Roboto" , Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-global);
+            color: var(--text-dark);
+            padding: 16px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px; 
+            width: 100%;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-family: "Lato", sans-serif;
+            font-weight: 900; 
+            font-style: normal;
+            font-size: 32px; 
+            letter-spacing: -0.5px;
+            color: var(--accent-blue); 
+            margin-bottom: 4px;
+        }
+
+        .lato-bold { font-family: "Lato", sans-serif; font-weight: 700; font-style: normal; } 
+        .lato-black { font-family: "Lato", sans-serif; font-weight: 900; font-style: normal; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card-funcao {
+            background-color: var(--card-white);
+            border-radius: 22px; 
+            padding: 12px 15px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+            display: flex;
+            flex-direction: column;
+            gap: 9px; 
+            border: 1px solid var(--border-color);
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .card-title {
+            font-size: 22px; 
+            font-weight: bold;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-designado {
+            width: 100%;
+            padding: 8px 12px; 
+            background-color: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 16px; 
+            font-size: 20px; 
+            color: var(--text-dark);
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-designado:focus {
+            background-color: var(--card-white);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(74, 96, 122, 0.15);
+        }
+
+        .input-designado::placeholder {
+            color: var(--text-muted);
+            font-weight: normal;
+            font-style: italic;
+            font-size: 16px;
+        }
+
+        textarea.input-designado {
+            resize: none; 
+            overflow-y: hidden;
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        #input-esboco, #input-cantico, #input-tema {
+            text-align: center;
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+<body>
 
-    <nav class="border-b border-slate-800 bg-slate-900 px-6 py-4 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
-                </div>
-                <div>
-                    <h1 class="text-4xl font-bold tracking-tight">Minha Carteira</h1>
-                    <p class="text-xs text-slate-400"></p>
-                </div>
-            </div>
-            <div id="status-badge" class="px-3 py-1 text-xs font-medium rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                Inicializando...
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
+    <header>
+        <h1>DISCURSO PÚBLICO</h1>
+    </header>
+    
+    <div class="cards-grid">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
-                <p class="text-2xl font-medium text-slate-400">Saldo Total</p>
-                <p id="card-total" class="text-4xl font-bold mt-2 text-emerald-400">R$ 0,00</p>
-            </div>
-            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
-                <p class="text-2xl font-medium text-slate-400">Brasil</p>
-                <p id="card-nacional" class="text-4xl font-bold mt-2 text-white">R$ 0,00</p>
-            </div>
-            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6">
-                <p class="text-2xl font-medium text-slate-400">Exterior</p>
-                <p id="card-exterior" class="text-4xl font-bold mt-2 text-blue-400">US$ 0,00</p>
-                <p id="card-exterior-brl" class="text-sm text-slate-500 mt-1">Câmbio: R$ 0,00</p>
-            </div>
+        <div class="card-funcao">
+            <h2 class="card-title">📝 Esboço</h2>
+            <!-- Vinculado à função de busca automática ao digitar -->
+            <input type="text" class="input-designado" id="input-esboco" placeholder="Nº do esboço..." oninput="salvarDados('esboco'); buscarTemaPorEsboco(this.value)">
         </div>
 
-        <div class="bg-slate-800/20 border border-slate-800 rounded-xl overflow-hidden w-full">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider bg-slate-900/50">
-                            <th class="py-4 px-5 text-center w-[20%]">Ativo</th>
-                            <th class="py-4 px-5 text-center w-[15%]">QTD</th>
-                            <th class="py-4 px-5 text-center w-[15%]">Preço</th>
-                            <th class="py-4 px-5 text-center w-[20%]">Total</th>
-                            <th class="py-4 px-5 text-center w-[15%]">Variação</th>
-                            <th class="py-4 px-5 text-center w-[15%]">Região</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-ativos-body" class="divide-y divide-slate-800/60 text-sm">
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-500">Nenhum dado carregado da planilha.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-funcao">
+            <h2 class="card-title">🎶 Cântico</h2>
+            <input type="text" class="input-designado" id="input-cantico" placeholder="Nº do cântico..." oninput="salvarDados('cantico')">
         </div>
 
-        <div class="bg-slate-800/40 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-end gap-4">
-            <div class="w-full flex-1">
-                <label class="block text-xs font-medium text-slate-400 mb-1">LINK DA PLANILHA (.TSV)</label>
-                <input type="text" id="input-url" placeholder="Cole o link .tsv do Google aqui se quiser alterar a fonte padrão" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
-            </div>
-            <button type="button" onclick="puxarDadosDaPlanilha()" class="w-full sm:w-auto h-9 px-5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-all text-xs shadow-md flex items-center justify-center gap-2 whitespace-nowrap">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.253 8H18" /></svg>
-                Forçar Atualização
-            </button>
+        <div class="card-funcao full-width">
+            <h2 class="card-title">📖 Tema</h2>
+            <textarea rows="1" class="input-designado" style="font-size: 24px;" id="input-tema" placeholder="Título do discurso..." oninput="salvarDados('tema'); ajustarAltura(this)"></textarea>
         </div>
 
-    </main>
+        <div class="card-funcao full-width">
+            <h2 class="card-title">🗣️ Orador</h2>
+            <input type="text" class="input-designado" id="input-orador" placeholder="Nome do irmão..." oninput="salvarDados('orador')">
+        </div>
+
+        <div class="card-funcao full-width">
+            <h2 class="card-title">🏡 Congregação</h2>
+            <input type="text" class="input-designado" id="input-congregacao" placeholder="Nome da congregação..." oninput="salvarDados('congregacao')">
+        </div>
+
+    </div>
 
     <script>
-        const LINK_PLANILHA_PADRAO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSANcAncbi_YPcolHZquRIHo1ExH6Rzbd7rMtkAj1uevsa_M8_nXwl-ZMffOrKCTcxIVf79fy33H1I/pub?output=tsv"; 
-
-        function tratarNumeroBR(valor) {
-            if (!valor) return 0;
-            let limpo = valor.toString().replace('%', '').trim().replace(/\s/g, '');
-            if (limpo.includes('.') && limpo.includes(',')) {
-                limpo = limpo.replace(/\./g, '').replace(',', '.');
-            } else {
-                limpo = limpo.replace(',', '.');
-            }
-            let num = parseFloat(limpo);
-            return isNaN(num) ? 0 : num;
-        }
-
-        // Formata valores financeiros (sempre 2 casas decimais)
-        function formatarNumeroApenas(valor) {
-            return valor.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(w?!\d))/g, '$1.');
-        }
-
-        // Nova função inteligente para formatar a quantidade (QTD) baseada na região
-        function formatarQuantidade(valor, tipo) {
-            if (tipo === 'nacional') {
-                // Remove os decimais e coloca o ponto de milhar se necessário (ex: 1.500)
-                return Math.round(valor).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            }
-            // Para o exterior, mantém as 2 casas decimais devido às frações
-            return formatarNumeroApenas(valor);
-        }
-
-        function formatarVariacao(valor) {
-            if (valor > 0) {
-                return { texto: `+${valor.toFixed(2).replace('.', ',')}%`, classe: 'text-emerald-400 font-medium' };
-            } else if (valor < 0) {
-                return { texto: `${valor.toFixed(2).replace('.', ',')}%`, classe: 'text-rose-400 font-medium' };
-            }
-            return { texto: '0,00%', classe: 'text-slate-400' };
-        }
-
-        function puxarDadosDaPlanilha() {
-            let urlInput = document.getElementById("input-url").value.trim();
-            let url = urlInput || LINK_PLANILHA_PADRAO;
-
-            if (!url) {
-                alterarStatus("Aguardando link", "bg-amber-500/10 text-amber-400 border-amber-500/20");
-                return;
-            }
-
-            try { localStorage.setItem("carteira_url_tsv", url); } catch(e) {}
-
-            alterarStatus("Busca", "bg-blue-500/10 text-blue-400 border-blue-500/20");
-
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) throw new Error("Erro na requisição");
-                    return response.text();
-                })
-                .then(text => {
-                    processarDadosTSV(text);
-                })
-                .catch(error => {
-                    console.error(error);
-                    alterarStatus("Erro", "bg-rose-500/10 text-rose-400 border-rose-500/20");
-                    alert("Não foi possível ler a planilha. Verifique se ela foi publicada corretamente como .tsv");
-                });
-        }
-
-        function processarDadosTSV(conteudo) {
-            let lines = conteudo.split(/\r?\n/);
-            let ativos = [];
-            let cotacaoDolar = 5.40;
-
-            for (let i = 0; i < lines.length; i++) {
-                let colunas = lines[i].split('\t');
-                if (colunas.length < 4) continue;
-
-                let ticker = colunas[0].trim().toUpperCase();
-                
-                if (ticker === "ATIVO" || ticker === "TICKER" || ticker === "CÓDIGO" || ticker === "") {
-                    continue;
-                }
-
-                let qtd = tratarNumeroBR(colunas[1]);
-                let preco = tratarNumeroBR(colunas[2]);
-                let variacao = colunas[3] ? tratarNumeroBR(colunas[3]) : 0;
-                let tipo = colunas[4] ? colunas[4].trim().toLowerCase() : 'nacional';
-
-                if (tipo === 'cambio' || ticker === 'DOLAR') {
-                    if (preco > 0) cotacaoDolar = preco;
-                    continue; 
-                }
-
-                ativos.push({ ticker, qtd, preco, variacao, tipo });
-            }
-
-            renderizarTela(ativos, cotacaoDolar);
-        }
-
-        function renderizarTela(ativos, dolar) {
-            let tbody = document.getElementById("tabela-ativos-body");
-            tbody.innerHTML = "";
-
-            let totalNacional = 0;
-            let totalExteriorUsd = 0;
-
-            if (ativos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="py-12 text-center text-slate-500">Nenhum ativo válido encontrado na planilha.</td></tr>';
-                return;
-            }
-
-            ativos.forEach(item => {
-                let totalItem = item.qtd * item.preco;
-
-                if (item.tipo === 'nacional') {
-                    totalNacional += totalItem;
-                } else {
-                    totalExteriorUsd += totalItem;
-                }
-
-                let labelTipo = item.tipo === 'nacional' ? 'Nacional' : 'Exterior';
-                let corBadge = item.tipo === 'nacional' ? 'bg-slate-800 text-slate-300' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
-                let infoVariacao = formatarVariacao(item.variacao);
-
-                let tr = document.createElement("tr");
-                tr.className = "border-b border-slate-800/40 hover:bg-slate-800/20 transition-colors";
-                
-                // Aplicada a nova função 'formatarQuantidade' na segunda coluna
-                tr.innerHTML = `
-                    <td class="py-4 px-5 text-center font-bold text-slate-200">${item.ticker}</td>
-                    <td class="py-4 px-5 text-center font-medium">${formatarQuantidade(item.qtd, item.tipo)}</td>
-                    <td class="py-4 px-5 text-center font-mono text-slate-300">${formatarNumeroApenas(item.preco)}</td>
-                    <td class="py-4 px-5 text-center font-mono font-semibold text-white">${formatarNumeroApenas(totalItem)}</td>
-                    <td class="py-4 px-5 text-center font-mono ${infoVariacao.classe}">${infoVariacao.texto}</td>
-                    <td class="py-4 px-5 text-center"><span class="px-2 py-0.5 text-xs rounded font-medium ${corBadge}">${labelTipo}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            let totalExteriorBrl = totalExteriorUsd * dolar;
-            let saldoGeralBrl = totalNacional + totalExteriorBrl;
-
-            document.getElementById("card-total").innerText = "R$ " + saldoGeralBrl.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            document.getElementById("card-nacional").innerText = "R$ " + totalNacional.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            document.getElementById("card-exterior").innerText = "US$ " + totalExteriorUsd.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            document.getElementById("card-exterior-brl").innerText = "Câmbio USD/BRL: R$ " + dolar.toFixed(2).replace('.', ',');
-
-            alterarStatus("OK", "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
-        }
-
-        function alterarStatus(texto, classes) {
-            let badge = document.getElementById("status-badge");
-            badge.innerText = texto;
-            badge.className = "px-3 py-1 text-xs font-medium rounded-full " + classes;
-        }
-
-        window.onload = function() {
-            try {
-                let urlSalva = localStorage.getItem("carteira_url_tsv");
-                if (urlSalva) {
-                    document.getElementById("input-url").value = urlSalva;
-                }
-            } catch(e) {}
-            
-            if (document.getElementById("input-url").value || LINK_PLANILHA_PADRAO) {
-                puxarDadosDaPlanilha();
-            } else {
-                alterarStatus("Falta Link da Planilha", "bg-amber-500/10 text-amber-400 border-amber-500/20");
-            }
+        // BANCO DE DADOS DE TEMAS DE DISCURSOS
+        const listaTemas = {
+            "1": "Você conhece bem a Deus?",
+            "2": "Você vai sobreviver aos últimos dias?",
+            "3": "Você está avançando com a organização unida de Jeová?",
+            "4": "Que provas temos de que Deus existe?",
+            "5": "Você pode ter uma família feliz!",
+            "6": "O Dilúvio dos dias de Noé e você",
+            "7": "Imite a misericórdia de Jeová",
+            "8": "Viva para fazer a vontade de Deus",
+            "9": "Escute e faça o que a Bíblia diz",
+            "10": "Seja honesto em tudo",
+            "11": "Imite a Jesus e não faça parte do mundo",
+            "12": "Deus quer que você respeite quem tem autoridade",
+            "13": "Qual o ponto de vista de Deus sobre o sexo e o casamento?",
+            "14": "Um povo puro e limpo honra a Jeová",
+            "15": "‘Faça o bem a todos’",
+            "16": "Seja cada vez mais amigo de Jeová",
+            "17": "Glorifique a Deus com tudo o que você tem",
+            "18": "Faça de Jeová a sua fortaleza",
+            "19": "Como você pode saber seu futuro?",
+            "20": "Chegou o tempo de Deus governar o mundo?",
+            "21": "Dê valor ao seu lugar no Reino de Deus",
+            "22": "Você está usando bem o que Jeová lhe dá?",
+            "23": "A vida tem objetivo",
+            "24": "Você encontrou “uma pérola de grande valor”?",
+            "25": "Lute contra o espírito do mundo",
+            "26": "Você é importante para Deus?",
+            "27": "Como construir um casamento feliz",
+            "28": "Mostre respeito e amor no seu casamento",
+            "29": "As responsabilidades e recompensas de ter filhos",
+            "30": "Como melhorar a comunicação na família",
+            "31": "Você tem consciência da sua necessidade espiritual?",
+            "32": "Como lidar com as ansiedades da vida",
+            "33": "Quando vai existir verdadeira justiça?",
+            "34": "Você vai ser marcado para sobreviver?",
+            "35": "É possível viver para sempre? O que você precisa fazer?",
+            "36": "Será que a vida é só isso?",
+            "37": "Obedecer a Deus é mesmo a melhor coisa a fazer?",
+            "38": "Como você pode sobreviver ao fim do mundo?",
+            "39": "Jesus Cristo vence o mundo — Como e quando?",
+            "40": "O que vai acontecer em breve?",
+            "41": "Fiquem parados e vejam como Jeová os salvará",
+            "42": "O amor pode vencer o ódio?",
+            "43": "Tudo o que Deus nos pede é para o nosso bem",
+            "44": "Como os ensinos de Jesus podem ajudar você?",
+            "45": "Continue andando no caminho que leva à vida",
+            "46": "Fortaleça sua confiança em Jeová",
+            "47": "‘Tenha fé novas’",
+            "48": "Seja leal a Deus mesmo quando for testado",
+            "49": "Será que um dia a Terra vai ser limpa?",
+            "50": "Como sempre tomar as melhores decisões",
+            "51": "Será que a verdade da Bíblia está mudando a sua vida?",
+            "52": "Quem é o seu Deus?",
+            "53": "Você pensa como Deus?",
+            "54": "Fortaleça sua fé em Deus e em suas promessas",
+            "55": "Você está fazendo um bom nome perante Deus?",
+            "56": "Existe um líder em quem você pode confiar?",
+            "58": "Quem são os verdadeiros seguidores de Cristo?",
+            "60": "Você tem um objetivo na vida?",
+            "61": "Nas promessas de quem você confia?",
+            "62": "Onde encontrar uma esperança real para o futuro?",
+            "63": "É possível encontrar a verdade?",
+            "64": "Você ama os prazeres ou a Deus?",
+            "65": "Como podemos ser pacíficos num mundo cheio de ódio",
+            "66": "Você também vai participar na colheita?",
+            "67": "Medite na Bíblia e nas criações de Jeová",
+            "68": "‘Continuem a perdoar uns aos outros liberalmente’",
+            "69": "Por que mostrar amor abnegado?",
+            "70": "Por que Deus merece sua confiança?",
+            "71": "‘Mantenha-se desperto’ — Por que e como?",
+            "72": "O amor identifica os cristãos verdadeiros",
+            "73": "Você tem “um coração sábio”?",
+            "74": "Os olhos de Jeová estão em todo lugar",
+            "75": "Mostre que você apoia o direito de Jeová governar",
+            "76": "Princípios bíblicos — Podem nos ajudar a lidar com os problemas atuais?",
+            "77": "“Sempre mostrem hospitalidade”",
+            "78": "Sirva a Jeová com um coração alegre",
+            "79": "Você vai escolher ser amigo de Deus?",
+            "80": "Você baseia sua esperança na ciência ou na Bíblia?",
+            "81": "Quem está qualificado para fazer discípulos?",
+            "83": "Será que os cristãos precisam obedecer aos Dez Mandamentos?",
+            "86": "Como orar a Deus e ser ouvido por ele?",
+            "88": "Por que viver de acordo com os padrões da Bíblia?",
+            "89": "Quem tem sede da verdade, venha!",
+            "90": "Faça o máximo para alcançar a verdadeira vida!",
+            "93": "Desastres naturais — Quando vão acabar?",
+            "95": "Não seja enganado pelo ocultismo!",
+            "96": "O que vai acontecer com as religiões?",
+            "98": "“A cena deste mundo está mudando”",
+            "99": "Por que podemos confiar no que a Bíblia diz?",
+            "100": "Como fazer amizades fortes e verdadeiras",
+            "101": "Jeová é o “Grandioso Criador”",
+            "102": "Preste atenção à “palavra profética”",
+            "103": "Como você pode ter a verdadeira alegria?",
+            "104": "Pais, vocês estão construindo com materiais à prova de fogo?",
+            "107": "Você está treinando bem a sua consciência?",
+            "108": "Você pode encarar o futuro com confiança!",
+            "111": "É possível que a humanidade seja completamente curada?",
+            "112": "Como mostrar amor num mundo egoísta",
+            "113": "Jovens — Como vocês podem ter uma vida feliz?",
+            "115": "Não caia nas armadilhas de Satanás",
+            "121": "Uma família mundial que será salva da destruição",
+            "129": "O que a Bíblia diz sobre a Trindade?",
+            "131": "Tome posição contra o Diabo!",
+            "132": "Ressurreição — A vitória sobre a morte!",
+            "134": "Será que os cristãos precisam guardar o sábado?",
+            "140": "Quem é realmente Jesus Cristo?",
+            "147": "Confie que Jeová tem o power para nos salvar",
+            "150": "Este mundo está condenado à destruição?",
+            "153": "Tenha bem em mente o “atemorizante dia”!",
+            "160": "Mantenha a identidade cristã!",
+            "162": "Seja liberto deste mundo em escuridão",
+            "166": "Verdadeira fé — O que é e como mostrar",
+            "169": "Por que ser orientado pela Bíblia?",
+            "170": "Quem está qualificado para governar a humanidade?",
+            "171": "Poderá viver em paz agora — E para sempre!",
+            "172": "Que reputação você tem perante Deus?",
+            "173": "Existe uma religião verdadeira do ponto de vista de Deus?",
+            "174": "Quem se qualificará para entrar no novo mundo de Deus?",
+            "175": "O que prova que a Bíblia é autêntica?",
+            "176": "Quando haverá verdadeira paz e segurança?",
+            "177": "Onde encontrar ajuda em tempos de aflição?",
+            "178": "Ande no caminho da integridade",
+            "179": "Rejeite as fantasias do mundo, empenhe-se pelas realidades do Reino",
+            "180": "A ressurreição — Por que essa esperança deve ser real para você",
+            "181": "Já é mais tarde do que você imagina?",
+            "182": "O que o Reino de Deus está fazendo por nós agora?",
+            "183": "Desvie seus olhos do que é fútil",
+            "184": "A morte é o fim de tudo?",
+            "185": "Será que a verdade influencia sua vida?",
+            "186": "Sirva em união com o povo feliz de Deus",
+            "187": "Por que um Deus amoroso permite a maldade?",
+            "188": "Você confia em Jeová?",
+            "189": "Ande com Deus e receba bênçãos para sempre",
+            "190": "Como se cumprirá a promessa de perfeita felicidade familiar",
+            "191": "Como o amor e a fé vencem o mundo",
+            "192": "Você está no caminho para a vida eterna?",
+            "193": "Os problemas de hoje logo serão coisa do passado",
+            "194": "Como a sabedoria de Deus nos ajuda"
         };
+
+        function salvarDados(id) {
+            const valor = document.getElementById(`input-${id}`).value;
+            localStorage.setItem(`discurso-${id}`, valor);
+        }
+
+        // Função que encontra o tema e autocompensa a célula
+        function buscarTemaPorEsboco(numero) {
+            const numeroLimpo = numero.trim();
+            const campoTema = document.getElementById('input-tema');
+
+            if (listaTemas[numeroLimpo]) {
+                campoTema.value = listaTemas[numeroLimpo];
+                salvarDados('tema');
+                ajustarAltura(campoTema);
+            }
+        }
+
+        function ajustarAltura(elemento) {
+            elemento.style.height = 'auto'; 
+            elemento.style.height = (elemento.scrollHeight + 4) + 'px'; 
+        }
+
+        function carregarDados() {
+            const ids = ['esboco', 'cantico', 'tema', 'orador', 'congregacao'];
+            ids.forEach(id => {
+                const salvo = localStorage.getItem(`discurso-${id}`);
+                if (salvo) {
+                    const elemento = document.getElementById(`input-${id}`);
+                    elemento.value = salvo;
+                    
+                    if (id === 'tema') {
+                        ajustarAltura(elemento);
+                    }
+                }
+            });
+        }
+
+        window.onload = carregarDados;
     </script>
 </body>
 </html>
