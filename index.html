@@ -207,8 +207,8 @@
                         const btnDividendos = document.getElementById("btn-aba-dividendos");
                         
                         if (paginaReal === 0) {
-                            btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
-                            btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[15px] text-slate-400 hover:text-slate-200 transition-all";
+                            btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[18px] bg-emerald-600 text-white transition-all";
+                            btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[18px] text-slate-400 hover:text-slate-200 transition-all";
                             try { localStorage.setItem("dashboard_aba_atual", 'carteira'); } catch(e) {}
                         } else {
                             btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] text-slate-400 hover:text-slate-200 transition-all";
@@ -316,7 +316,7 @@
                 let prefixoMoeda = item.tipo === 'nacional' ? 'R$' : 'US$';
 
                 let card = document.createElement("div");
-                card.className = "bg-slate-900 border border-slate-700/80 rounded-[18px] p-4 flex justify-between items-center hover:border-slate-700/60 transition-all shadow-sm";
+                card.className = "bg-slate-900 border border-slate-700/80 rounded-[20px] p-4 flex justify-between items-center hover:border-slate-700/60 transition-all shadow-sm";
                 
                 card.innerHTML = `
                     <div class="space-y-1">
