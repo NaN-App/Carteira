@@ -5,24 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Investimentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+        <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         
         /* Remove as barras de rolagem horizontais padrão mantendo a função do carrossel ativa */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* DESATIVA A ANCORAGEM NATIVA: Garante que o celular aceite nosso comando de ir para o topo */
+        html, body, #carousel-viewport {
+            overflow-anchor: none !important;
+        }
     </style>
+
 </head>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon-192.png">
+<body class="bg-slate-900 text-slate-100 h-screen flex flex-col overflow-hidden">    
 
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 overflow-x-hidden">    
-
-    <nav class="border-b border-slate-700 bg-slate-900 px-6 py-4 sticky top-0 z-50">
+    <!-- Menu Fixo Superior (Não sai do lugar e não encolhe) -->
+    <nav class="border-b border-slate-700 bg-slate-900 px-6 py-4 shrink-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-[18px]">
@@ -44,11 +50,11 @@
         </div>
     </nav>
 
-    <!-- Container controlador do Carrossel por gesto de deslize (Swipe) -->
-    <div id="carousel-viewport" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full">        
+    <!-- Container controlador do Carrossel (Ocupa o resto da tela e esconde o scroll vertical cruzado) -->
+    <div id="carousel-viewport" class="flex-1 flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full overflow-y-hidden">        
         
-        <!-- PÁGINA 1: PATRIMÔNIO -->
-        <div id="wrapper-carteira" class="w-full shrink-0 snap-start">
+        <!-- PÁGINA 1: PATRIMÔNIO (Tem seu próprio scroll isolado) -->
+        <div id="wrapper-carteira" class="w-full shrink-0 snap-start h-full overflow-y-auto pb-12">
             <main id="conteudo-carteira" class="max-w-4xl mx-auto px-4 mt-8 space-y-5">    
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -73,7 +79,6 @@
                     </div>
                 </div>
 
-                <!-- Botão discreto de atualização manual se você não quiser esperar o timer de 2 min -->
                 <div class="flex justify-end pr-2">
                     <button type="button" onclick="puxarDadosDaPlanilha()" class="text-xs text-slate-400 hover:text-emerald-400 flex items-center gap-1 transition-all">
                         Atualizar agora
@@ -82,8 +87,8 @@
             </main>
         </div>
 
-        <!-- PÁGINA 2: PROVENTOS -->
-        <div id="wrapper-dividendos" class="w-full shrink-0 snap-start">
+        <!-- PÁGINA 2: PROVENTOS (Tem seu próprio scroll isolado) -->
+        <div id="wrapper-dividendos" class="w-full shrink-0 snap-start h-full overflow-y-auto pb-12">
             <main id="conteudo-dividendos" class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-6">    
                 
                 <div class="bg-slate-800/40 border border-slate-700 rounded-[40px] p-5 flex flex-col gap-2 relative">
@@ -148,7 +153,8 @@
             </main>
         </div>
 
-    </div>    
+    </div>
+    
 
     <script>
         const LINK_PLANILHA_PADRAO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSANcAncbi_YPcolHZquRIHo1ExH6Rzbd7rMtkAj1uevsa_M8_nXwl-ZMffOrKCTcxIVf79fy33H1I/pub?output=tsv"; 
@@ -189,48 +195,23 @@ function alternarAba(aba, instantaneo = false) {
     const viewport = document.getElementById("carousel-viewport");
     if (!viewport) return;
 
-    const wrapCarteira = document.getElementById("wrapper-carteira");
-    const wrapDividendos = document.getElementById("wrapper-dividendos");
-
-    // Remove temporariamente as travas de altura para permitir a transição suave
-    wrapCarteira.classList.remove('max-h-0', 'overflow-hidden');
-    wrapDividendos.classList.remove('max-h-0', 'overflow-hidden');
-
     const targetLeft = aba === 'carteira' ? 0 : viewport.offsetWidth;
     viewport.scrollTo({
         left: targetLeft,
         behavior: instantaneo ? 'auto' : 'smooth'
     });
-
-    // Se for o carregamento inicial (instantâneo), já aplica a trava imediatamente
-    if (instantaneo) {
-        if (aba === 'carteira') {
-            wrapDividendos.classList.add('max-h-0', 'overflow-hidden');
-        } else {
-            wrapCarteira.classList.add('max-h-0', 'overflow-hidden');
-        }
-    }
 }
-
-let scrollTimeout;
 
 window.addEventListener('DOMContentLoaded', () => {
     const viewport = document.getElementById("carousel-viewport");
     if (viewport) {
         
-        // 1. Monitora o movimento do Scroll / Swipe
         viewport.addEventListener('scroll', () => {
             const width = viewport.offsetWidth;
             if (width > 0) {
                 const paginaReal = Math.round(viewport.scrollLeft / width);
                 const btnCarteira = document.getElementById("btn-aba-carteira");
                 const btnDividendos = document.getElementById("btn-aba-dividendos");
-                const wrapCarteira = document.getElementById("wrapper-carteira");
-                const wrapDividendos = document.getElementById("wrapper-dividendos");
-
-                // Durante o movimento, ambas as abas precisam de altura livre
-                wrapCarteira.classList.remove('max-h-0', 'overflow-hidden');
-                wrapDividendos.classList.remove('max-h-0', 'overflow-hidden');
                 
                 if (paginaReal === 0) {
                     btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
@@ -242,25 +223,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     try { localStorage.setItem("dashboard_aba_atual", 'dividendos'); } catch(e) {}
                     renderizarDividendos(); 
                 }
-
-                // Aguarda a animação de scroll parar (150ms) para achatar a altura da aba oculta
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    const paginaAtualizada = Math.round(viewport.scrollLeft / width);
-                    if (paginaAtualizada === 0) {
-                        wrapDividendos.classList.add('max-h-0', 'overflow-hidden');
-                    } else {
-                        wrapCarteira.classList.add('max-h-0', 'overflow-hidden');
-                    }
-                }, 150);
             }
         });
-
-        // 2. Quando encostar o dedo para arrastar, libera as alturas instantaneamente
-        viewport.addEventListener('touchstart', () => {
-            document.getElementById("wrapper-carteira").classList.remove('max-h-0', 'overflow-hidden');
-            document.getElementById("wrapper-dividendos").classList.remove('max-h-0', 'overflow-hidden');
-        }, { passive: true });
     }
 });
 
