@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Investimentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-        <style>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         
-        /* Remove as barras de rolagem horizontais padrão mantendo a função do carrossel ativa */
+        /* Remove as barras de rolagem horizontais padrão mantendo a função do carrossel activa */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* DESATIVA A ANCORAGEM NATIVA: Garante que o celular aceite nosso comando de ir para o topo */
+        /* DESATIVA A ANCORAGEM NATIVA */
         html, body, #carousel-viewport {
             overflow-anchor: none !important;
         }
     </style>
-
 </head>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link class="apple-touch-icon" href="icon-192.png">
+
 <body class="bg-slate-900 text-slate-100 h-screen flex flex-col overflow-hidden">    
 
-    <!-- Menu Fixo Superior (Não sai do lugar e não encolhe) -->
+    <!-- Menu Fixo Superior -->
     <nav class="border-b border-slate-700 bg-slate-900 px-6 py-4 shrink-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -50,10 +50,10 @@
         </div>
     </nav>
 
-    <!-- Container controlador do Carrossel (Ocupa o resto da tela e esconde o scroll vertical cruzado) -->
+    <!-- Container controlador do Carrossel -->
     <div id="carousel-viewport" class="flex-1 flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full overflow-y-hidden">        
         
-        <!-- PÁGINA 1: PATRIMÔNIO (Tem seu próprio scroll isolado) -->
+        <!-- PÁGINA 1: PATRIMÔNIO -->
         <div id="wrapper-carteira" class="w-full shrink-0 snap-start h-full overflow-y-auto pb-12">
             <main id="conteudo-carteira" class="max-w-4xl mx-auto px-4 mt-8 space-y-5">    
                 
@@ -73,6 +73,23 @@
                     </div>
                 </div>
 
+                <!-- Pílulas de Filtro Dinâmico -->
+                <div class="flex gap-2 pl-1 overflow-x-auto no-scrollbar">
+                    <button type="button" onclick="mudarFiltroPatrimonio('todos')" id="btn-filtro-todos" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-emerald-600 text-white transition-all shrink-0">
+                        🌎 Todos
+                    </button>
+                    <button type="button" onclick="mudarFiltroPatrimonio('nacional')" id="btn-filtro-nacional" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200 transition-all shrink-0">
+                       🇧🇷 Brasil
+                    </button>
+                    <button type="button" onclick="mudarFiltroPatrimonio('exterior')" id="btn-filtro-exterior" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200 transition-all shrink-0">
+                        🇺🇸 EUA
+                    </button>
+                    <button type="button" onclick="mudarFiltroPatrimonio('aporte')" id="btn-filtro-aporte" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200 transition-all shrink-0 flex items-center gap-1">
+                        🎯 Aporte
+                    </button>
+                </div>
+
+                <!-- Lista de ativos -->
                 <div id="lista-ativos-cards" class="space-y-3">
                     <div class="text-center py-12 text-slate-500 bg-slate-800/20 border border-slate-700 rounded-[30px]">
                         Carregando dados automaticamente...
@@ -87,7 +104,7 @@
             </main>
         </div>
 
-        <!-- PÁGINA 2: PROVENTOS (Tem seu próprio scroll isolado) -->
+        <!-- PÁGINA 2: PROVENTOS -->
         <div id="wrapper-dividendos" class="w-full shrink-0 snap-start h-full overflow-y-auto pb-12">
             <main id="conteudo-dividendos" class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-6">    
                 
@@ -117,7 +134,7 @@
                     <div class="grid grid-cols-2 gap-4 items-end">
                         <div class="col-span-1">
                             <label class="block text-xs text-slate-400 mb-1 pl-2">CÓDIGO / ATIVO</label>
-                            <input type="text" id="div-input-ativo" oninput="atualizarAvisoQuantidade()" placeholder="" class="w-full bg-slate-900 border border-slate-700 rounded-[18px] px-3 py-2 text-center text-white font-bold uppercase placeholder:font-normal focus:outline-none focus:border-emerald-500">
+                            <input type="text" id="div-input-ativo" oninput="atualizarAvisoQuantidade()" class="w-full bg-slate-900 border border-slate-700 rounded-[18px] px-3 py-2 text-center text-white font-bold uppercase placeholder:font-normal focus:outline-none focus:border-emerald-500">
                         </div>
                         
                         <div class="col-span-1">
@@ -125,7 +142,7 @@
                                 <label class="text-xs text-slate-400">VALOR (R$)</label>
                                 <span id="aviso-qtd-carteira" class="text-xs text-emerald-400 font-medium"></span>
                             </div>
-                            <input type="number" step="0.0001" id="div-input-valor-cota" placeholder="" class="w-full bg-slate-900 border border-slate-700 rounded-[18px] px-3 py-2 text-center text-white focus:outline-none focus:border-emerald-500">
+                            <input type="number" step="0.0001" id="div-input-valor-cota" class="w-full bg-slate-900 border border-slate-700 rounded-[18px] px-3 py-2 text-center text-white focus:outline-none focus:border-emerald-500">
                         </div>
                         
                         <button type="button" onclick="adicionarDividendo()" class="col-span-2 w-full h-10 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-[18px] transition-all text-[15px] shadow-md">
@@ -152,7 +169,6 @@
                 </div>
             </main>
         </div>
-
     </div>
     
 
@@ -162,18 +178,30 @@
         let listaDividendos = [];
         let cacheAtivosCarteira = [];
         let cacheCotacaoDolar = 5.40;
+        let filtroPatrimonioAtual = 'todos';
 
-        // ================= SISTEMA DE CONTROLE DO CALENDÁRIO MATERIAL DESIGN =================
+        function mudarFiltroPatrimonio(filtro) {
+            filtroPatrimonioAtual = filtro;
+            const filtros = ['todos', 'nacional', 'exterior', 'aporte'];
+            filtros.forEach(f => {
+                const btn = document.getElementById(`btn-filtro-${f}`);
+                if (!btn) return;
+                if (f === filtro) {
+                    btn.className = "px-4 py-1.5 text-xs font-semibold rounded-full bg-emerald-600 text-white transition-all shrink-0";
+                } else {
+                    btn.className = "px-4 py-1.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200 transition-all shrink-0";
+                }
+            });
+            renderizarCards(cacheAtivosCarteira, cacheCotacaoDolar);
+        }
 
         function abrirSeletorDataModerno() {
             const inputOculto = document.getElementById("input-data-oculto");
             const valorAtual = document.getElementById("filtro-mes-div").value; 
-            
             if (valorAtual && valorAtual.includes('/')) {
                 const [mes, ano] = valorAtual.split('/');
                 inputOculto.value = `${ano}-${mes}-01`;
             }
-            
             if (typeof inputOculto.showPicker === 'function') {
                 inputOculto.showPicker();
             } else {
@@ -184,51 +212,41 @@
         function atualizarMesPeloDataPicker(dataString) {
             if (!dataString) return;
             const [ano, mes, dia] = dataString.split('-');
-            
             document.getElementById("filtro-mes-div").value = `${mes}/${ano}`;
             renderizarDividendos();
         }
 
-        // ================= SISTEMA DE CARTEIRA COM SCROLL DO CARROSSEL =================
+        function alternarAba(aba, instantaneo = false) {
+            const viewport = document.getElementById("carousel-viewport");
+            if (!viewport) return;
+            const targetLeft = aba === 'carteira' ? 0 : viewport.offsetWidth;
+            viewport.scrollTo({ left: targetLeft, behavior: instantaneo ? 'auto' : 'smooth' });
+        }
 
-function alternarAba(aba, instantaneo = false) {
-    const viewport = document.getElementById("carousel-viewport");
-    if (!viewport) return;
-
-    const targetLeft = aba === 'carteira' ? 0 : viewport.offsetWidth;
-    viewport.scrollTo({
-        left: targetLeft,
-        behavior: instantaneo ? 'auto' : 'smooth'
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    const viewport = document.getElementById("carousel-viewport");
-    if (viewport) {
-        
-        viewport.addEventListener('scroll', () => {
-            const width = viewport.offsetWidth;
-            if (width > 0) {
-                const paginaReal = Math.round(viewport.scrollLeft / width);
-                const btnCarteira = document.getElementById("btn-aba-carteira");
-                const btnDividendos = document.getElementById("btn-aba-dividendos");
-                
-                if (paginaReal === 0) {
-                    btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
-                    btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[14px] text-slate-400 hover:text-slate-200 transition-all";
-                    try { localStorage.setItem("dashboard_aba_atual", 'carteira'); } catch(e) {}
-                } else {
-                    btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] text-slate-400 hover:text-slate-200 transition-all";
-                    btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
-                    try { localStorage.setItem("dashboard_aba_atual", 'dividendos'); } catch(e) {}
-                    renderizarDividendos(); 
-                }
+        window.addEventListener('DOMContentLoaded', () => {
+            const viewport = document.getElementById("carousel-viewport");
+            if (viewport) {
+                viewport.addEventListener('scroll', () => {
+                    const width = viewport.offsetWidth;
+                    if (width > 0) {
+                        const paginaReal = Math.round(viewport.scrollLeft / width);
+                        const btnCarteira = document.getElementById("btn-aba-carteira");
+                        const btnDividendos = document.getElementById("btn-aba-dividendos");
+                        
+                        if (paginaReal === 0) {
+                            btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
+                            btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[14px] text-slate-400 hover:text-slate-200 transition-all";
+                            try { localStorage.setItem("dashboard_aba_atual", 'carteira'); } catch(e) {}
+                        } else {
+                            btnCarteira.className = "px-4 py-2 text-sm font-medium rounded-[15px] text-slate-400 hover:text-slate-200 transition-all";
+                            btnDividendos.className = "px-4 py-2 text-sm font-medium rounded-[15px] bg-emerald-600 text-white transition-all";
+                            try { localStorage.setItem("dashboard_aba_atual", 'dividendos'); } catch(e) {}
+                            renderizarDividendos(); 
+                        }
+                    }
+                });
             }
         });
-    }
-});
-
-
 
         function tratarNumeroBR(valor) {
             if (!valor) return 0;
@@ -260,7 +278,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         function puxarDadosDaPlanilha() {
-            // Puxa diretamente e estritamente da URL padrão definida no código
             fetch(LINK_PLANILHA_PADRAO)
                 .then(response => {
                     if (!response.ok) throw new Error("Erro na requisição");
@@ -293,7 +310,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 let variacaoPct = tratarNumeroBR(colunas[4]); 
                 let tipo = colunas[5] ? colunas[5].trim().toLowerCase() : 'nacional';
-                
                 let pctAtual = colunas[6] ? tratarNumeroBR(colunas[6]) : 0;
                 let pctIdeal = colunas[7] ? tratarNumeroBR(colunas[7]) : 0;
 
@@ -311,27 +327,56 @@ window.addEventListener('DOMContentLoaded', () => {
             let totalNacional = 0;
             let totalExteriorUsd = 0;
 
-            if (ativos.length === 0) {
-                // SINTAXE CORRIGIDA: Adicionadas crases corretas na String
-                container.innerHTML = `<div class="text-center py-12 text-slate-500 bg-slate-800/20 border border-slate-700 rounded-[25px]">Nenhum ativo válido encontrado.</div>`;
-                return;
-            }
-
             ativos.forEach(item => {
                 if (item.tipo === 'nacional') { totalNacional += item.totalItem; } 
                 else { totalExteriorUsd += item.totalItem; }
+            });
 
+            let totalExteriorBrl = totalExteriorUsd * dolar;
+            let saldoGeralBrl = totalNacional + totalExteriorBrl;
+
+            document.getElementById("card-total").innerText = "R$ " + formatarNumeroApenas(saldoGeralBrl);
+            document.getElementById("card-nacional").innerText = "R$ " + formatarNumeroApenas(totalNacional);
+            document.getElementById("card-exterior").innerText = "US$ " + formatarNumeroApenas(totalExteriorUsd);
+            document.getElementById("card-exterior-brl").innerText = "Câmbio USD/BRL: R$ " + dolar.toFixed(2).replace('.', ',');
+
+            let ativosFiltrados = [...ativos];
+
+            if (filtroPatrimonioAtual === 'nacional') {
+                ativosFiltrados = ativosFiltrados.filter(item => item.tipo === 'nacional');
+            } else if (filtroPatrimonioAtual === 'exterior') {
+                ativosFiltrados = ativosFiltrados.filter(item => item.tipo === 'exterior');
+            } else if (filtroPatrimonioAtual === 'aporte') {
+                ativosFiltrados.sort((a, b) => (b.pctIdeal - b.pctAtual) - (a.pctIdeal - a.pctAtual));
+            }
+
+            if (ativosFiltrados.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-500 bg-slate-800/20 border border-slate-700 rounded-[25px]">Nenhum ativo encontrado para este filtro.</div>`;
+                return;
+            }
+
+            ativosFiltrados.forEach(item => {
                 let infoVariacao = formatarVariacaoApenasPorcentagem(item.variacaoPct);
                 let prefixoMoeda = item.tipo === 'nacional' ? 'R$' : 'US$';
+                let tagDiferenca = "";
+
+                if (filtroPatrimonioAtual === 'aporte') {
+                    let dif = item.pctIdeal - item.pctAtual;
+                    if (dif > 0) {
+                        tagDiferenca = `<span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-lg font-medium ml-1">Falta ${dif.toFixed(1).replace('.', ',')}%</span>`;
+                    } else {
+                        tagDiferenca = `<span class="text-[10px] bg-slate-800 text-slate-500 px-2 py-0.5 rounded-lg font-medium ml-1">Meta Batida</span>`;
+                    }
+                }
 
                 let card = document.createElement("div");
                 card.className = "bg-slate-900 border border-slate-700/80 rounded-[30px] p-4 flex justify-between items-center hover:border-slate-700/60 transition-all shadow-sm";
-                
                 card.innerHTML = `
                     <div class="space-y-1">
-                        <div class="flex items-baseline gap-2">
+                        <div class="flex items-center gap-2">
                             <span class="text-lg font-bold tracking-wide text-white">${item.ticker}</span>
                             <span class="text-xs font-semibold text-slate-500">(${formatarQuantidade(item.qtd)})</span>
+                            ${tagDiferenca}
                         </div>
                         <div class="text-xs font-medium text-slate-400">
                             <span>${item.pctAtual.toFixed(2).replace('.', ',')}%</span>
@@ -351,27 +396,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 `;
                 container.appendChild(card);
             });
-
-            let totalExteriorBrl = totalExteriorUsd * dolar;
-            let saldoGeralBrl = totalNacional + totalExteriorBrl;
-
-            document.getElementById("card-total").innerText = "R$ " + formatarNumeroApenas(saldoGeralBrl);
-            document.getElementById("card-nacional").innerText = "R$ " + formatarNumeroApenas(totalNacional);
-            document.getElementById("card-exterior").innerText = "US$ " + formatarNumeroApenas(totalExteriorUsd);
-            document.getElementById("card-exterior-brl").innerText = "Câmbio USD/BRL: R$ " + dolar.toFixed(2).replace('.', ',');
         }
-
-        // ================= GESTÃO DE DIVIDENDOS =================
 
         function atualizarAvisoQuantidade() {
             let ativoDigitado = document.getElementById("div-input-ativo").value.trim().toUpperCase();
             let avisoSpan = document.getElementById("aviso-qtd-carteira");
-            
             if (!ativoDigitado) {
                 avisoSpan.innerText = "";
                 return;
             }
-
             let ativoLocalizado = cacheAtivosCarteira.find(a => a.ticker === ativoDigitado);
             if (ativoLocalizado) {
                 avisoSpan.innerText = `${formatarQuantidade(ativoLocalizado.qtd)} cotas`;
@@ -398,18 +431,12 @@ window.addEventListener('DOMContentLoaded', () => {
             let quantidadeCotas = ativoNaCarteira ? ativoNaCarteira.qtd : 0;
 
             if (quantidadeCotas === 0) {
-                let confirmar = confirm(`Você possui 0 cotas listadas de ${ativo} hoje na carteira. O valor calculated será R$ 0,00. Deseja prosseguir?`);
+                let confirmar = confirm(`Você possui 0 cotas listadas de ${ativo} hoje na carteira. O valor calculado será R$ 0,00. Deseja prosseguir?`);
                 if (!confirmar) return;
             }
 
             let valorTotalCalculado = quantidadeCotas * valorCota;
-
-            let novoProvento = { 
-                id: Date.now(), 
-                ativo,
-                valor: valorTotalCalculado, 
-                mesRef 
-            };
+            let novoProvento = { id: Date.now(), ativo, valor: valorTotalCalculado, mesRef };
             
             listaDividendos.push(novoProvento);
             localStorage.setItem("carteira_dividendos", JSON.stringify(listaDividendos));
@@ -419,22 +446,18 @@ window.addEventListener('DOMContentLoaded', () => {
             document.getElementById("aviso-qtd-carteira").innerText = "";
             
             renderizarDividendos();
-            renderizarCards(cacheAtivosCarteira, cacheCotacaoDolar);
         }
 
         function excluirDividendo(id) {
             listaDividendos = listaDividendos.filter(item => item.id !== id);
             localStorage.setItem("carteira_dividendos", JSON.stringify(listaDividendos));
-            
             renderizarDividendos();
-            renderizarCards(cacheAtivosCarteira, cacheCotacaoDolar);
         }
 
         function renderizarDividendos() {
             let tbody = document.getElementById("tabela-dividendos-body");
             let filtroMes = document.getElementById("filtro-mes-div").value; 
             tbody.innerHTML = "";
-
             let totalDoMes = 0;
             
             let dividendosFiltrados = listaDividendos.filter(item => {
@@ -454,7 +477,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
             dividendosFiltrados.forEach(item => {
                 totalDoMes += item.valor;
-                
                 let dataExibicao = item.mesRef;
                 if (dataExibicao.includes('-')) {
                     const [ano, mes] = dataExibicao.split('-');
@@ -466,7 +488,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 tr.innerHTML = `
                     <td class="py-4 px-2 sm:px-5 text-center font-bold text-slate-200">${item.ativo}</td>
                     <td class="py-4 px-2 sm:px-5 text-center font-medium">${dataExibicao}</td>
-                    <td class="py-4 px-2 sm:px-5 text-center font-mono font-semibold text-emerald-400"> ${formatarNumeroApenas(item.valor)}</td>
+                    <td class="py-4 px-2 sm:px-5 text-center font-mono font-semibold text-emerald-400">R$ ${formatarNumeroApenas(item.valor)}</td>
                     <td class="py-4 px-2 sm:px-5 text-center">
                         <button onclick="excluirDividendo(${item.id})" class="text-rose-500 hover:text-rose-400 text-xs font-semibold px-2 py-1 rounded-[12px] bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 transition-all">
                             Excluir
@@ -478,12 +500,10 @@ window.addEventListener('DOMContentLoaded', () => {
             document.getElementById("total-mes-dividendos").innerText = "R$ " + formatarNumeroApenas(totalDoMes);
         }
 
-        // Inicialização automática das rotinas
         window.onload = function() {
             let hoje = new Date();
             let ano = hoje.getFullYear();
             let mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
-            
             document.getElementById("filtro-mes-div").value = `${mes}/${ano}`;
             
             try {
@@ -501,10 +521,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (ultimaAbaSalva === 'dividendos') renderizarDividendos();
             }, 100);
             
-            // Puxa imediatamente ao abrir a tela
             puxarDadosDaPlanilha();
-
-            // SUCESSO: Roda a atualização oculta a cada 2 minutos (120000 milissegundos)
             setInterval(puxarDadosDaPlanilha, 120000);
         };
     </script>
